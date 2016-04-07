@@ -80,8 +80,8 @@ class PackageResolver {
     def sdkToolsVersion = getPackageRevision(sdkToolsDir)
     log.debug "Found sdkToolsVersion: $sdkToolsVersion"
 
-    def minSdkToolsRevision = FullRevision.parseRevision(minSdkToolsVersion)
-    def sdkToolsRevision = FullRevision.parseRevision(sdkToolsVersion)
+    def minSdkToolsRevision = VersionMatcher.parse(minSdkToolsVersion)
+    def sdkToolsRevision = VersionMatcher.parse(sdkToolsVersion)
     def needsDownload = sdkToolsRevision < minSdkToolsRevision
 
     if (!needsDownload) {
@@ -104,7 +104,7 @@ class PackageResolver {
     def currentSdkToolsVersion = matcher.group(1)
     log.debug "currentSdkToolsVersion: $currentSdkToolsVersion"
 
-    def currentSdkToolsRevision = FullRevision.parseRevision(currentSdkToolsVersion)
+    def currentSdkToolsRevision = VersionMatcher.parse(currentSdkToolsVersion)
     if (currentSdkToolsRevision < minSdkToolsRevision) {
       throw new StopExecutionException("Currently available SDK tools version($currentSdkToolsVersion)" +
               " is smaller than defined in minSdkToolsVersion: $minSdkToolsVersion")
